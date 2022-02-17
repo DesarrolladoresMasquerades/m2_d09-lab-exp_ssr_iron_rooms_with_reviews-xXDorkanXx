@@ -1,0 +1,16 @@
+<h1>Edit room</h1>
+<form action="/rooms/{{_id}}/edit" method="POST" enctype="multipart/form-data">
+    <label for="name">Name:</label>
+    <input type="text" name="name" value="{{name}}">
+
+    <label for="description">Genre:</label>
+    <input type="text" name="description" value="{{description}}">
+
+    <label for="imageUrl">Image:</label>
+    <img src="{{imageUrl}}" alt="{{name}}" width="100">
+    <input type="file" name="imageUrl" required/>
+
+    <button type="submit">Edit</button>
+</form>
+    <br>
+    <a href="/rooms/{{_id}}">Go back</a>

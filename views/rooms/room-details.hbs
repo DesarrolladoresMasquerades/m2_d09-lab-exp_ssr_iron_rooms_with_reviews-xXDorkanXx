@@ -1,0 +1,19 @@
+<h1>Room details</h1>
+
+<h3>{{name}}</h3>
+<img src="{{imageUrl}}" alt="{{name}}" width="300">
+<p>{{description}}</p>
+<span>Owner: {{owner.fullName}}</span>
+<br>
+
+
+<a href="/rooms/{{_id}}/edit"><button>Edit</button></a>
+
+
+<form action="/rooms/{{_id}}/delete" method="POST">
+<button type="submit">Delete!</button>
+</form>
+
+<br>
+
+<a href="/rooms/list">Go back</a>
