@@ -1,0 +1,13 @@
+<h1>Rooms list</h1>
+
+{{#each rooms}}
+<div>
+    <h3>{{name}}</h3>
+    <img src="{{imageUrl}}" alt="{{name}}" width="100">
+    <br>
+    <a href="/rooms/{{_id}}">See more</a>
+</div>
+{{/each}}
+
+<br>
+<a href="/">Go back</a>
