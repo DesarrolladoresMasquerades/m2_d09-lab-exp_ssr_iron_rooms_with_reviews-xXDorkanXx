@@ -1,22 +1,21 @@
 const router = require("express").Router();
 const isLoggedIn = require("../middleware/isLoggedIn");
 const isLoggedOut = require("../middleware/isLoggedOut");
-const isTheOwner = require("../middleware/isTheOwner");
 const fileUploader = require("../config/cloudinary.config");
 const User = require("../models/User.model");
 const Room = require("../models/Room.model");
 
 
-router.route("/:id/edit", isTheOwner)
+router.route("/:id/edit")
 .get((req, res)=>{
-    // const id = req.params.id;
-    // Room.findById(id)
-    // .populate("owner")
-    // .then((room)=>{
-    //     if(room.owner._id.toString() !== req.session.userId){res.redirect(`/rooms/${id}`)}
-    //     res.render("rooms/edit-room", room)
-    // })
-    res.render("rooms/edit-room", room)
+    const id = req.params.id;
+    Room.findById(id)
+    .populate("owner")
+    .then((room)=>{
+        if(room.owner._id.toString() !== req.session.userId){return res.redirect(`/rooms/${id}`)}
+        res.render("rooms/edit-room", room)
+    })
+    .catch((err)=>{console.log(err)})
 })
 .post(fileUploader.single("imageUrl"), (req, res)=>{
     const id = req.params.id;
@@ -30,13 +29,19 @@ router.route("/:id/edit", isTheOwner)
 
 router.post("/:id/delete", (req, res)=>{
     const id = req.params.id;
-    Room.findByIdAndDelete(id)
-    .then(()=>{res.redirect("/rooms/list")})
+    Room.findById(id)
+    .populate("owner")
+    .then((room)=>{
+        if(room.owner._id.toString() !== req.session.userId){ return res.redirect(`/rooms/${id}`)}
+        Room.deleteOne({id})
+        .then(()=>{res.redirect("/rooms/list")})
+        .catch((err)=>{console.log(err)})
+    })
     .catch((err)=>{console.log(err)})
 })
 
-router.route("/create", isLoggedIn)
-.get((req, res)=>{
+router.route("/create")
+.get(isLoggedIn, (req, res)=>{
     res.render("rooms/create-room")
 })
 .post(fileUploader.single("imageUrl"), (req,res)=>{

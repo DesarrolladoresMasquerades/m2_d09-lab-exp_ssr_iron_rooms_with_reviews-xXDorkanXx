@@ -4,7 +4,7 @@ const { Schema, model } = require("mongoose");
 const userSchema = new Schema(
   {
     email: String,
-    fullName: {type: String, unique: true},
+    fullName: String,
     password: String,
     
     // slack login - optional
